@@ -28,6 +28,10 @@ public class Main {
    	 	for(int i = 0; i < PLATES_COUNT; i++) {
    	 		//ourSystem[i] = new Plate(angleOfRotationStart, angleOfRotationStop, depolarizationLimit);
    	 		ourSystem[i] = new Plate(angleOfRotationStart, angleOfRotationStop, depolarizationLimit, 200);
+   	 		System.out.println(i);
+   	 		System.out.println(ourSystem[i].getAngle() / 0.017453);
+   	 		System.out.println(ourSystem[i].getDepolarization());
+   	 		System.out.println(ourSystem[i].getThickness());
    	 	}
    	 	
    	 	for(int w = WAVELENGTH_START; w <= WAVELENGTH_STOP; w += 5) {
