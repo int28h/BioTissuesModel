@@ -1,4 +1,5 @@
-import java.io.File;
+//plot "H:/Result.txt" with lines
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -14,33 +15,37 @@ public class Main {
 	private static final double DIFFERENCE = 0.001; //разница между обыкновенным и необыкновенным лучами
 
 	public static void main(String[] args) throws FileNotFoundException {
-		Scanner in = new Scanner(new File("H://input.txt"));
-		int angleOfRotationStart = in.nextInt();
-   	 	int angleOfRotationStop = in.nextInt();
-   	 	double depolarizationLimit = in.nextDouble();
+		Scanner in = new Scanner(System.in);
+		int angleOfRotation = in.nextInt();
+		int thickness = in.nextInt();
    	 	in.close();
    	 	
-   	 	String outputFileName = "H://" + depolarizationLimit + ".txt";
-		FileOutputStream fos = new FileOutputStream(outputFileName);
-   	 	PrintStream out = new PrintStream(fos); 	
+		FileOutputStream fos = new FileOutputStream("H:\\Result.txt");
+   	 	PrintStream out = new PrintStream(fos); 
+   	 	
+   	 	FileOutputStream los = new FileOutputStream("H:\\Logs.txt");
+   	 	PrintStream logs = new PrintStream(los); 
    	 	
    	 	Plate[] ourSystem = new Plate[PLATES_COUNT];
-   	 	for(int i = 0; i < PLATES_COUNT; i++) {
-   	 		//ourSystem[i] = new Plate(angleOfRotationStart, angleOfRotationStop, depolarizationLimit);
-   	 		ourSystem[i] = new Plate(angleOfRotationStart, angleOfRotationStop, depolarizationLimit, 200);
+   	 	for(int i = 0; i < PLATES_COUNT; i++) {   	 		
+   	 		if(i % 2 == 0) {
+   	 		ourSystem[i] = new Plate(angleOfRotation, thickness);
+   	 		} else {
+   	 			ourSystem[i] = new Plate(-angleOfRotation, thickness);
+   	 		}
    	 		System.out.println(i);
    	 		System.out.println(ourSystem[i].getAngle() / 0.017453);
-   	 		System.out.println(ourSystem[i].getDepolarization());
    	 		System.out.println(ourSystem[i].getThickness());
    	 	}
    	 	
    	 	for(int w = WAVELENGTH_START; w <= WAVELENGTH_STOP; w += 5) {
-   	 		double[][] result = Polarizer.POLARIZER_0_DEGREES;
+   	 		logs.println("Длина волны "+ w);
+   	 		double[][] result = Polarizer.POLARIZER_0_DEGREES;   	 		
+   	 		int numberOfPlate = 1;
    	 		
    	 		for(Plate p : ourSystem) {
    	 			double pA = p.getAngle();
    	 			int pT = p.getThickness();
-   	 			double pD = p.getDepolarization();
    	 			
    	 			double d = (pT * DIFFERENCE * Math.PI) / w; //фазовый набег(?)
    	 			double b = Math.cos(d);
@@ -53,14 +58,33 @@ public class Main {
    	                    { 0, Math.sin(2*pA)*m, -(Math.cos(2*pA)*m), b }
    	 			};
    	 			
-   	 			double[][] temp1 = MatrixArithmetic.multiplicationMatrixNumber(mullerMatrix, 1 - pD);
-   	 			double[][] temp2 = MatrixArithmetic.multiplicationMatrixNumber(Polarizer.DEPOLARIZER, pD);
-   	 			temp1 = MatrixArithmetic.additionMatrixMatrix(temp1, temp2);
-   	 			result = MatrixArithmetic.multiplicationMatrixMatrix(result, temp1);
+   	 			result = MatrixArithmetic.multiplicationMatrixMatrix(result, mullerMatrix);   	 			
+   	 			 	 			
+   	 			logs.println("После прохождения пластины номер " + numberOfPlate);
+   	 			for(int i = 0; i < 4; i++){
+   	 				logs.print(result[i][0] + " ");
+   	 				logs.print(result[i][1] + " ");
+   	 				logs.print(result[i][2] + " ");
+   	 				logs.println(result[i][3]);
+   	 			}
+   	 			numberOfPlate++;
    	 		}
    	 		
    	 		result = MatrixArithmetic.multiplicationMatrixMatrix(result, Polarizer.POLARIZER_90_DEGREES);
-   	 		out.println(w +  "\t" +  result[0][0]);
+   	 		double gWithoutPi = 2 * DIFFERENCE * thickness * 1000 / w; //thickness - в мкм!
+   	 		StringBuilder formattedG = new StringBuilder();
+   	 		formattedG.append(gWithoutPi).toString().replaceAll(",", ".");
+   	 		
+   	 		logs.println("Итог:");
+   	 		for(int i = 0; i < 4; i++){
+				logs.print(result[i][0] + " ");
+				logs.print(result[i][1] + " ");
+				logs.print(result[i][2] + " ");
+				logs.println(result[i][3]);
+			}
+   	 		
+   	 		out.println(formattedG.toString() +  "\t" +  result[0][0]);
+   	 		System.out.println(formattedG.toString() +  "\t" +  result[0][0]);
    	 	}
    	 	
    	 	out.close();
