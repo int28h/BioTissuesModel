@@ -56,8 +56,8 @@ public class Main {
    	 			double[][] mullerMatrix = {
    	 					{ 1, 0, 0, 0 },
    	 					{ 0, Math.pow(Math.cos(2*pA),2)+Math.pow(Math.sin(2*pA),2)*b, Math.pow(Math.cos(2*pA),2)*Math.pow(Math.sin(2*pA),2)*(1-b), -(Math.sin(2*pA)*m) },
-   	                    { 0, Math.cos(2*pA)*Math.sin(2*pA)*(1-b), Math.pow(Math.sin(2*pA),2)+Math.pow(Math.cos(2*pA),2)*b, Math.cos(2*pA)*m },
-   	                    { 0, Math.sin(2*pA)*m, -(Math.cos(2*pA)*m), b }
+   	                    			{ 0, Math.cos(2*pA)*Math.sin(2*pA)*(1-b), Math.pow(Math.sin(2*pA),2)+Math.pow(Math.cos(2*pA),2)*b, Math.cos(2*pA)*m },
+   	                    			{ 0, Math.sin(2*pA)*m, -(Math.cos(2*pA)*m), b }
    	 			};
    	 			
    	 			result = MatrixArithmetic.multiplicationMatrixMatrix(result, mullerMatrix);   	 			
