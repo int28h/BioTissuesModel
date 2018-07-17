@@ -1,5 +1,4 @@
-//здесь арифметические операции над матрицами
-
+package utils;
 public class MatrixArithmetic {
 	public static double[][] multiplicationMatrixNumber(double[][] m, double n) {
 		double[][] result = new double[4][4];		

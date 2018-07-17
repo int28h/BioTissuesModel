@@ -1,4 +1,4 @@
-package Components;
+package model;
 
 public class Polarizer {
 	public static final double[][] POLARIZER_0_DEGREES = {

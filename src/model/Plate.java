@@ -1,4 +1,4 @@
-﻿package Components;
+﻿package model;
 
 import java.util.Random;
 
@@ -14,8 +14,8 @@ public class Plate {
 	 * @param thickness
 	 */
 	public Plate(int angleOfRotation, int thickness) {
-		this.angleOfRotation = angleOfRotation * 0.017453; // в радианах
-		this.thickness = thickness * 1000; //мкм переводятся в нм		
+		this.angleOfRotation = angleOfRotation * 0.017453; 
+		this.thickness = thickness * 1000;	
 	}
 	
 	/**
@@ -26,7 +26,8 @@ public class Plate {
 	 * @param thickness
 	 */
 	public Plate(int angleOfRotation, int differenceForAngles, int thickness) {		
-		this.angleOfRotation = (angleOfRotation + random.nextInt(differenceForAngles++ + differenceForAngles) - 1) * 0.017453; // в радианах
+		this.angleOfRotation = (angleOfRotation + random.nextInt(
+				differenceForAngles++ + differenceForAngles) - 1) * 0.017453; 
 		this.thickness = thickness * 1000; 	
 	}
 	
@@ -38,8 +39,11 @@ public class Plate {
 	 * @param thickness
 	 * @param isThicknessWithFlucuations
 	 */
-	public Plate(int angleOfRotation, int differenceForAngles, int thickness, boolean isThicknessWithFlucuations) {
-		this.angleOfRotation = (angleOfRotation + random.nextInt(differenceForAngles++ + differenceForAngles) - differenceForAngles) * 0.017453; // в радианах
+	public Plate(int angleOfRotation, int differenceForAngles, int thickness, 
+			boolean isThicknessWithFlucuations) {
+		this.angleOfRotation = (angleOfRotation + random.nextInt(
+				differenceForAngles++ + differenceForAngles) - differenceForAngles) 
+				* 0.017453; 
 		this.thickness = (thickness + random.nextInt(51 + 50) - 50) * 1000;
 	}
 	
